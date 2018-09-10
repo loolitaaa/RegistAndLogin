@@ -44,17 +44,20 @@ public class JdbcCrud {
 	public static UserInfo query(UserInfo user,boolean usePassword){
 		//查找到的user
 		UserInfo userFound = null;
+		Connection conn = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
 		
 		try {
-			
-			PreparedStatement ps = getConnection().prepareStatement(QUERY_SQL);
+			conn = getConnection();
+			ps = conn.prepareStatement(QUERY_SQL);
 			
 			ps.setString(1, user.getUsername());
 			ps.setString(2, user.getEmail());
 			ps.setString(3, String.valueOf(!usePassword));
 			ps.setString(4, user.getPassword());
 			
-			ResultSet rs = ps.executeQuery();
+			rs = ps.executeQuery();
 			if(!rs.next()) return userFound;
 			
 			//若查找到用户信息,新建一个UserInfo实例并赋值
@@ -63,7 +66,7 @@ public class JdbcCrud {
 			e.printStackTrace();
 			userFound = FLAG_USER;
 		} finally{
-			//close
+			JdbcUtils.close(conn, ps, rs);
 		}
 		return userFound;
 	}
@@ -79,9 +82,14 @@ public class JdbcCrud {
 		if(!user.isComplete())return null;
 		
 		//被新建的user
-		UserInfo createdUser = null;				
+		UserInfo createdUser = null;
+		
+		Connection conn = null;
+		PreparedStatement ps = null;
+		
 		try {
-			PreparedStatement ps = getConnection().prepareStatement(CREATE_SQL);
+			conn = getConnection();
+			ps = conn.prepareStatement(CREATE_SQL);
 			
 			ps.setString(1, user.getUsername());
 			ps.setString(2, user.getEmail());
@@ -93,7 +101,7 @@ public class JdbcCrud {
 			e.printStackTrace();
 			return null;
 		} finally{
-			//close
+			JdbcUtils.close(conn, ps, null);
 		}
 		return createdUser;
 	}
@@ -103,11 +111,13 @@ public class JdbcCrud {
 	 * 1. 只有用户名和邮箱全部匹配才能修改密码
 	 * 2. 成功返回true 失败返回false
 	 */	
-	public static boolean changePassword(UserInfo user){
-		PreparedStatement ps;
+	public static boolean changePassword(UserInfo user){		
+		Connection conn = null;
+		PreparedStatement ps = null;
 		
 		try {
-			ps = getConnection().prepareStatement(UPDATE_PASSWORD_SQL);
+			conn = getConnection();
+			ps = conn.prepareStatement(UPDATE_PASSWORD_SQL);
 			
 			ps.setString(1, user.getPassword());
 			ps.setString(2, user.getUsername());
@@ -118,7 +128,7 @@ public class JdbcCrud {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally{
-			//close
+			JdbcUtils.close(conn, ps, null);
 		}	
 		return false;
 	}
@@ -129,10 +139,12 @@ public class JdbcCrud {
 	 * 2. 成功返回true 失败返回false
 	 */	
 	public static boolean changeEmail(UserInfo user){
-		PreparedStatement ps;
+		Connection conn = null;
+		PreparedStatement ps = null;
 		
 		try {
-			ps = getConnection().prepareStatement(UPDATE_EMAIL_SQL);
+			conn = getConnection();
+			ps = conn.prepareStatement(UPDATE_EMAIL_SQL);
 			
 			ps.setString(3, user.getPassword());
 			ps.setString(2, user.getUsername());
@@ -143,33 +155,31 @@ public class JdbcCrud {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally{
-			//close
+			JdbcUtils.close(conn, ps, null);
 		}	
 		return false;
 	}
 	
 	//提供了直接执行sql语句的方法,慎用
 	public static boolean excute(String sql){
+		Connection conn = null;
+		PreparedStatement ps = null;
+		
 		try {
-			PreparedStatement ps = getConnection().prepareStatement(sql);
+			conn = getConnection();
+			ps = conn.prepareStatement(sql);
 			return ps.execute(sql);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally{
-			//close
+			JdbcUtils.close(conn, ps, null);
 		}
 		return false;
 	}
 	
 	private static Connection getConnection(){
-		try {
-			Class.forName("com.mysql.jdbc.Driver");
-			Connection conn = DriverManager.getConnection("jdbc:mysql:///jtdb","root","root");
-			return conn;
-		} catch (Exception e) {
-			e.printStackTrace();
-		} 
-		return null;
+		 
+		return JdbcUtils.getConnection();
 	}
 		
 	@Test
