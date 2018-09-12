@@ -1,41 +1,256 @@
-<!DOCTYPE HTML>
-<HTML>
-	<head>
-		<title>注册页面</title>
-		<meta http-equiv="Content-type" content="text/html; charset=UTF-8" />
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>注册页面</title>
+	<style type="text/css">
+		body{
+			font-family:"微软雅黑";
+			font-size:12px;
+		}
+		body,table,tr,td{
+			margin: 0;
+			padding: 0;
+		}
 		
-	</head>
-	<body>
-		<h1 align="center">注册</h1>
-		<form action="http://localhost/login/RegistServlet" method="GET">
-			<table border="1px" bordercolor="red" bgcolor="lightgray" cellspacing="0px" cellpadding="5px" align="center">
-				<tr>
-					<td>用户名:</td>				
-					<td><input type="text" name="username"/></td>				
-				</tr>
-				<tr>
-					<td>密码:</td>				
-					<td><input type="password" name="password"/></td>				
-				</tr>
-				<tr>
-					<td>确认密码:</td>				
-					<td><input type="password" id="repassword"/></td>				
-				</tr>
+		/* ** middle css start ** */
+		#middle{
+			/*background-color:cyan;*/
+			width: 1200px;
+			/*height:615px;*/
+			height:545px;
+			margin:0 auto;
+			border:7px solid #F0F0F0;
+			border-top-width:9px;
+			border-bottom-width:9px;
+			padding-top:75px;
+		}
+		
+		#middle div{
+			background-color:#eee;
+			display: inline-block;
+			float:right;
+			margin-right:59px;
+			width: 211px;
+			height: 211px;
+		}
+		
+		#middle form{
+			/*background-color:#eee;*/
+			display: inline-block;
+			width: 819px;
+			margin-left:109px;
+		}
+		.err_msg_tr{
+			height:32px;
+		}
+		
+		#form_tab tr td input{
+			width:381px;
+			height:50px;
+			border: 1px solid #DBDBDB;
+			font-size:16px;
+			color:#999999;
+			text-indent: 45px;
+		}
+		
+		#form_tab tr td.err_msg{
+			height:32px;
+			text-indent: 45px;
+			background:url("./image/alert_1.png") 17px 7px no-repeat;
+			color:#c3c3c3;
+			font-size:12px;
+			visible:collapse;
+		}
+		
+		#form_tab tr td.alter{
+			color:#e64346;
+			background:url("./image/alert_2.png") 17px 7px no-repeat;
+		}
+		
+		
+		#form_tab tr td input[type='submit']{
+			font-size:20px;
+			color:#ffffff;
+			background-color: #e64346;
+			text-indent: 0px;
+		}
+		
+		#form_tab tr td input.username{
+			transition: background 0.4s;
+			background:url("./image/u_ico.png") 15px 15px  no-repeat,
+			           url("./image/ok.png")right -21px center no-repeat,
+			           url("./image/error.png")right -21px center no-repeat;
+		}
+		#form_tab tr td input.password{
+			transition: background 0.4s;
+			background:url("./image/p_ico.png")15px 15px no-repeat,
+				       url("./image/ok.png")right -21px center no-repeat,
+			           url("./image/error.png")right -21px center no-repeat;
+		}
+		#form_tab tr td input.password{
+			transition: background 0.4s;
+			background:url("./image/p_ico.png")15px 15px no-repeat,
+			           url("./image/ok.png")right -21px center no-repeat,
+			           url("./image/error.png")right -21px center no-repeat;
+		}
+		#form_tab tr td input.email{
+			background:url("./image/phone_ico.png") 15px 15px no-repeat,
+			           url("./image/ok.png")right -21px center no-repeat,
+			           url("./image/error.png")right -21px center no-repeat;
+            transition: background 0.4s;
+        }
+		
+		.username.err_icon{
+			background:url("./image/u_ico.png") 15px 15px  no-repeat,
+			           url("./image/ok.png")right -21px center no-repeat,
+			           url("./image/error.png")right 21px center no-repeat;
+		}
+		
+	</style>
+	<script src="js/jquery-1.4.2.js"></script>
+	<script type="text/javascript">		
+		//提示信息
+		var msg = {
+			"username":"用户名",
+			"password":"密码",
+			"repassword":"确认密码",
+			"email":"邮箱"
+		}
+		//错误提示信息
+		var err_msg = {
+			"username":"支持中文、字母、数字、-、_的组合，4-20个字母",
+			"password":"建议使用数字、字母和符号两种以上的组合，6-20个字符",
+			"username_used":"用户名已被占用",
+			"email_used":"邮箱已被占用"
+		}
+		
+		//提示图标的位置信息
+		var user_icon_loc = {
+			"OK":"url('./image/u_ico.png') 15px 15px no-repeat,url('./image/ok.png')right 15px center no-repeat,url('./image/error.png')right -21px center no-repeat",
+			"ERROR":"url('./image/u_ico.png') 15px 15px no-repeat,url('./image/ok.png')right -21px center no-repeat,url('./image/error.png')right 15px center no-repeat",
+			"NONE":"url('./image/u_ico.png') 15px 15px no-repeat,url('./image/ok.png')right -21px center no-repeat,url('./image/error.png')right -21px center no-repeat"
+		}
+		
+		var psd_icon_loc = {
+			"OK":"url('./image/p_ico.png') 15px 15px no-repeat,url('./image/ok.png')right 15px center no-repeat,url('./image/error.png')right -21px center no-repeat",
+			"ERROR":"url('./image/p_ico.png') 15px 15px no-repeat,url('./image/ok.png')right -21px center no-repeat,url('./image/error.png')right 15px center no-repeat",
+			"NONE":"url('./image/p_ico.png') 15px 15px no-repeat,url('./image/ok.png')right -21px center no-repeat,url('./image/error.png')right 15px center no-repeat"			
+		}
+		
+		var eml_icon_loc = {
+			"OK":"url('./image/phone_ico.png') 15px 15px no-repeat,url('./image/ok.png')right 15px center no-repeat,url('./image/error.png')right -21px center no-repeat",
+			"ERROR":"url('./image/phone_ico.png') 15px 15px no-repeat,url('./image/ok.png')right -21px center no-repeat,url('./image/error.png')right 15px center no-repeat",
+			"NONE":"url('./image/phone_ico.png') 15px 15px no-repeat,url('./image/ok.png')right -21px center no-repeat,url('./image/error.png')right 15px center no-repeat"			
+		}
+		
+		$(function(){
+			//隐藏提示信息
+			$(".err_msg").hide();
+			
+			//输入数据时,隐藏"用户名"等信息,显示提示信息
+			$(":text,:password").focus(function(){
+				//清空input标签的默认value
+				if(this.value == msg[this.name]){
+					this.value = "";
+				}
+				if(this.className=="password")this.type = "password";
+				if(this.name == "username"||this.name == "password"){
+					$(this).parents("tr").next().children().show();
+				}
+			})
+			
+			//不再输入数据时,恢复加载页面时的设置
+			$(":text,:password").blur(function(){
+				if(this.value == ""){
+					this.value = msg[this.name];
+					this.type = "text";
+				}
+				if(this.name == "username"||this.name == "password"){
+					$(this).parents("tr").next().children().hide();
+				}
+			})
+			
+			//为repassword标签添加onchange事件
+			$("input[name=repassword]").change(function(){
 				
+			})
+			
+			//为username添加keyup事件
+			//1. 检查格式,显示错误提示
+			//2. 格式正确,发送请求至后台查询数据库,未被占用提示ok,占用则提示被占用
+			$("input[name=username]").keyup(function(){
+				var reg = /^[\u4e00-\u9fa5_a-zA-Z0-9_]{4,20}$/;
+				if(!reg.test(this.value)){
+					$(this).css("background",user_icon_loc["ERROR"]);
+				}else{
+					$(this).css("background",user_icon_loc["OK"]);
+				}
+				
+				//没有输入数据时不进行提示
+				if(!this.value){
+					$(this).css("background",user_icon_loc["NONE"]);
+				}
+			});
+			
+			
+		})
+	</script>
+	
+</head>
+<body>
+	
+	<!-- body-start -->
+	<div id="middle">
+		<form action="#" method="POST">
+			<table id="form_tab">
 				<tr>
-					<td>邮箱:</td>				
 					<td>
-						<input type="text" name="email">
-					</td>				
+						<input class="username" type="text" name="username" value="用户名"/>
+					</td>
+				</tr>
+				<tr class="err_msg_tr">
+					<td class="err_msg" id="err_msg1">
+						支持中文、字母、数字、-、_的组合，4-20个字母
+					</td>
 				</tr>
 				<tr>
-					<td colspan="2" align="center">
-						<input type="submit" value="提交"/>
-						<input type="reset" value="重置"/>
-					</td>				
+					<td>
+						<input class="password" type="text" name="password" value="密码"/>
+					</td>
 				</tr>
-			</table>	
-		</form>	
+				<tr class="err_msg_tr">
+					<td class="err_msg" id="err_msg2">
+						建议使用数字、字母和符号两种以上的组合，6-20个字符
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<input class="password" type="text" name="repassword" value="确认密码"/>
+					</td>
+				</tr>
+				<tr class="err_msg_tr">
+					<td class="err_msg alter" id="err_msg3">
+						两次密码输入不一致
+					</td>
+				</tr>
+				<tr>
+					<td >
+						<input class="email" type="text" name="email" value="邮箱"/>
+					</td>
+				</tr>
+				<tr class="err_msg_tr">
+					<td class='err_msg alter' id="err_msg4">
+						邮箱格式不正确
+					</td>
+				</tr>
+				<tr >
+					<td>
+						<input type="submit" value="立即注册"/>
+					</td>
+				</tr>
+			</table>
+		</form>
 
-	</body>
-</HTML>
+</body>
+</html>
