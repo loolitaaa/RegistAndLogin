@@ -109,7 +109,10 @@
 		
 	</style>
 	<script src="js/jquery.js"></script>
-	<script type="text/javascript">		
+	<script type="text/javascript">	
+		//储存用户检查结果的信息;
+		var result;
+	
 		//提示信息
 		var msg = {
 			"username":"用户名",
@@ -147,8 +150,12 @@
 			var xmlhttp = new XMLHttpRequest();
 			xmlhttp.onreadystatechange=function(){
 				if(xmlhttp.readyState==4 && xmlhttp.status==200){
-					alert(xmlhttp.responseText);
-					return xmlhttp.responseText;
+					result = xmlhttp.responseText;
+					if(result=="true"){
+					 	$("input[name=username]").css("background",user_icon_loc["OK"]);
+					} else{
+						$("input[name=username]").css("background",user_icon_loc["ERROR"]);
+					}
 				}
 			}
 			xmlhttp.open("GET","/login/UserCheckServlet?nameOrEmail="+val,true);
@@ -192,24 +199,19 @@
 			//1. 检查格式,显示错误提示
 			//2. 格式正确,发送请求至后台查询数据库,未被占用提示ok,占用则提示被占用
 			$("input[name=username]").keyup(function(){
+
 				var reg = /^[\u4e00-\u9fa5_a-zA-Z0-9_]{4,20}$/;
 				if(!reg.test(this.value)){
 					$(this).css("background",user_icon_loc["ERROR"]);
 				}else{
-					if(userCheck(this.value)){
-						$(this).css("background",user_icon_loc["OK"]);
-					} else{
-						$(this).css("background",user_icon_loc["ERROR"]);
-					}
+					userCheck(this.value);	 
 				}
 				
 				//没有输入数据时不进行提示
 				if(!this.value){
 					$(this).css("background",user_icon_loc["NONE"]);
 				}
-			});
-			
-			
+			})			
 		})
 	</script>
 	
