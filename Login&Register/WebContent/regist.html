@@ -108,7 +108,7 @@
 		}
 		
 	</style>
-	<script src="js/jquery-1.4.2.js"></script>
+	<script src="js/jquery.js"></script>
 	<script type="text/javascript">		
 		//提示信息
 		var msg = {
@@ -130,19 +130,31 @@
 			"OK":"url('./image/u_ico.png') 15px 15px no-repeat,url('./image/ok.png')right 15px center no-repeat,url('./image/error.png')right -21px center no-repeat",
 			"ERROR":"url('./image/u_ico.png') 15px 15px no-repeat,url('./image/ok.png')right -21px center no-repeat,url('./image/error.png')right 15px center no-repeat",
 			"NONE":"url('./image/u_ico.png') 15px 15px no-repeat,url('./image/ok.png')right -21px center no-repeat,url('./image/error.png')right -21px center no-repeat"
-		}
-		
+		}		
 		var psd_icon_loc = {
 			"OK":"url('./image/p_ico.png') 15px 15px no-repeat,url('./image/ok.png')right 15px center no-repeat,url('./image/error.png')right -21px center no-repeat",
 			"ERROR":"url('./image/p_ico.png') 15px 15px no-repeat,url('./image/ok.png')right -21px center no-repeat,url('./image/error.png')right 15px center no-repeat",
 			"NONE":"url('./image/p_ico.png') 15px 15px no-repeat,url('./image/ok.png')right -21px center no-repeat,url('./image/error.png')right 15px center no-repeat"			
-		}
-		
+		}		
 		var eml_icon_loc = {
 			"OK":"url('./image/phone_ico.png') 15px 15px no-repeat,url('./image/ok.png')right 15px center no-repeat,url('./image/error.png')right -21px center no-repeat",
 			"ERROR":"url('./image/phone_ico.png') 15px 15px no-repeat,url('./image/ok.png')right -21px center no-repeat,url('./image/error.png')right 15px center no-repeat",
 			"NONE":"url('./image/phone_ico.png') 15px 15px no-repeat,url('./image/ok.png')right -21px center no-repeat,url('./image/error.png')right 15px center no-repeat"			
 		}
+		
+		//检测用户名或邮箱是否已被占用
+		function userCheck(val){
+			var xmlhttp = new XMLHttpRequest();
+			xmlhttp.onreadystatechange=function(){
+				if(xmlhttp.readyState==4 && xmlhttp.status==200){
+					alert(xmlhttp.responseText);
+					return xmlhttp.responseText;
+				}
+			}
+			xmlhttp.open("GET","/login/UserCheckServlet?nameOrEmail="+val,true);
+			xmlhttp.send();
+		}
+		
 		
 		$(function(){
 			//隐藏提示信息
@@ -184,7 +196,11 @@
 				if(!reg.test(this.value)){
 					$(this).css("background",user_icon_loc["ERROR"]);
 				}else{
-					$(this).css("background",user_icon_loc["OK"]);
+					if(userCheck(this.value)){
+						$(this).css("background",user_icon_loc["OK"]);
+					} else{
+						$(this).css("background",user_icon_loc["ERROR"]);
+					}
 				}
 				
 				//没有输入数据时不进行提示
