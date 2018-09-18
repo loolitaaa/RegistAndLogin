@@ -1,0 +1,112 @@
+body{
+			font-family:"微软雅黑";
+			font-size:12px;
+		}
+		body,table,tr,td{
+			margin: 0;
+			padding: 0;
+		}
+		
+		/* ** middle css start ** */
+		#middle{
+			/*background-color:cyan;*/
+			width: 1200px;
+			/*height:615px;*/
+			height:545px;
+			margin:0 auto;
+			border:7px solid #F0F0F0;
+			border-top-width:9px;
+			border-bottom-width:9px;
+			padding-top:75px;
+		}
+		
+		#middle div{
+			background-color:#eee;
+			display: inline-block;
+			float:right;
+			margin-right:59px;
+			width: 211px;
+			height: 211px;
+		}
+		
+		#middle form{
+			/*background-color:#eee;*/
+			display: inline-block;
+			width: 819px;
+			margin-left:109px;
+		}
+		.err_msg_tr{
+			height:32px;
+		}
+		
+		#form_tab tr td input{
+			width:381px;
+			height:50px;
+			border: 1px solid #DBDBDB;
+			font-size:16px;
+			color:#999999;
+			text-indent: 45px;
+			vertical-align:middle;
+		}
+		
+		#form_tab tr td.err_msg{
+			height:32px;
+			text-indent: 45px;
+			background:url("../image/alert_1.png") 17px 7px no-repeat;
+			color:#c3c3c3;
+			font-size:12px;
+			visible:collapse;
+		}
+		
+		#form_tab tr td.alter{
+			color:#e64346;
+			background:url("../image/alert_2.png") 17px 7px no-repeat;
+		}
+		
+		
+		#form_tab tr td input[type='button']{
+			font-size:20px;
+			color:#ffffff;
+			background-color: #e64346;
+			text-indent: 0px;
+		}
+		
+		#form_tab tr td input.username{
+			transition: background 0.4s;
+			background:url("../image/u_ico.png") 15px 15px  no-repeat,
+			           url("../image/ok.png")right -21px center no-repeat,
+			           url("../image/error.png")right -21px center no-repeat;
+		}
+		#form_tab tr td input.password{
+			transition: background 0.4s;
+			background:url("../image/p_ico.png")15px 15px no-repeat,
+				       url("../image/ok.png")right -21px center no-repeat,
+			           url("../image/error.png")right -21px center no-repeat;
+		}
+		#form_tab tr td input.password{
+			transition: background 0.4s;
+			background:url("../image/p_ico.png")15px 15px no-repeat,
+			           url("../image/ok.png")right -21px center no-repeat,
+			           url("../image/error.png")right -21px center no-repeat;
+		}
+		#form_tab tr td input.email{
+			background:url("../image/phone_ico.png") 15px 15px no-repeat,
+			           url("../image/ok.png")right -21px center no-repeat,
+			           url("../image/error.png")right -21px center no-repeat;
+            transition: background 0.4s;
+        }
+		#form_tab tr td input#verifyCode{
+			background:url("../image/phone_ico.png") 15px 15px no-repeat,
+			           url("../image/ok.png")right -21px center no-repeat,
+			           url("../image/error.png")right -21px center no-repeat;
+            transition: background 0.4s;
+            width: 180px;
+        }
+		#img{
+			vertical-align:bottom;
+		}
+		.username.err_icon{
+			background:url("../image/u_ico.png") 15px 15px  no-repeat,
+			           url("../image/ok.png")right -21px center no-repeat,
+			           url("../image/error.png")right 21px center no-repeat;
+		}

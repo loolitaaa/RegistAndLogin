@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript">
+	var createCode = function(){
+		xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function(){
+			if(xhttp.status== 200 && xhttp.readyState==4){
+				$("img").attr("src","data:image/jpeg;base64,"+xhttp.responseText);
+			}
+		}
+		xhttp.open("GET","/login/VerifyCodeCreateServlet",true)
+		xhttp.send();
+	}
+	
+	$(function(){
+		createCode();
+	})
+	function sub(){
+		xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function(){
+			if(xhttp.status== 200 && xhttp.readyState==4){
+			}
+		}
+		xhttp.open("GET","/login/VerifyCodeCheckServlet",true)
+		xhttp.send();
+	}
+</script>
+</head>
+<body>
+	<form action="/login/VerifyCodeCheckServlet" >
+		<input type="text" name="verifyCode">
+		<img alt="code" src="data:image/jpeg;base64," onclick="createCode()">
+		<a href="Javascript:void(0)" onclick="createCode()">看不清换一个</a>
+		<input type="submit" value="提交">
+	</form>
+</body>
+</html>
