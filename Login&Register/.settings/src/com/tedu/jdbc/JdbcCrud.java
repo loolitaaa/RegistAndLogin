@@ -6,14 +6,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 import com.tedu.user.UserInfo;
 
 public class JdbcCrud {
 	//查询的SQL语句:通过username或email查询,第三个?处设置是否带password查询
 	private static final String QUERY_SQL;
-	private static final String NOPASSWORD_QUERY_SQL;
 	//向user表中添加用户信息的SQL语句
 	private static final String CREATE_SQL;
 	//更改用户密码的SQL语句
@@ -26,8 +25,7 @@ public class JdbcCrud {
 	public static final boolean USEPASSWORD;
 			
 	static{
-		QUERY_SQL = "select * from user where (username = ? or email = ?) and password = ?";
-		NOPASSWORD_QUERY_SQL = "select * from user where username = ? or email = ?";
+		QUERY_SQL = "select * from user where (username = ? or email = ?) and (? or password = ?)";
 		CREATE_SQL = "insert into user values (null,?,?,?)";
 		UPDATE_PASSWORD_SQL = "update user set password = ? where (username = ? and email = ?)";
 		UPDATE_EMAIL_SQL = "update user set password = ? where (username = ? and password = ?)";
@@ -52,18 +50,12 @@ public class JdbcCrud {
 		
 		try {
 			conn = getConnection();
-			if(usePassword) {
-				ps = conn.prepareStatement(QUERY_SQL);
-				
-				ps.setString(1, user.getUsername());
-				ps.setString(2, user.getEmail());
-				ps.setString(3, user.getPassword());
-			} else {
-				ps = conn.prepareStatement(NOPASSWORD_QUERY_SQL);
-				
-				ps.setString(1, user.getUsername());
-				ps.setString(2, user.getEmail());
-			}
+			ps = conn.prepareStatement(QUERY_SQL);
+			
+			ps.setString(1, user.getUsername());
+			ps.setString(2, user.getEmail());
+			ps.setString(3, String.valueOf(!usePassword));
+			ps.setString(4, user.getPassword());
 			
 			rs = ps.executeQuery();
 			if(!rs.next()) return userFound;
@@ -192,8 +184,8 @@ public class JdbcCrud {
 		
 	@Test
 	public void test(){
-		UserInfo ls = new UserInfo("11111","11111","1");
+		UserInfo ls = new UserInfo("李四","78978@qq.com","12345");
 
-		System.out.println(JdbcCrud.query(ls, false));
+		System.out.println(JdbcCrud.changePassword(ls));
 	}	
 }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" id="WebApp_ID" version="2.5">
-  <display-name>login</display-name>
+  <display-name>Login&amp;Register</display-name>
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>
     <welcome-file>index.htm</welcome-file>
@@ -28,44 +28,5 @@
   <servlet-mapping>
     <servlet-name>RegistServlet</servlet-name>
     <url-pattern>/RegistServlet</url-pattern>
-  </servlet-mapping>
-  <servlet>
-    <description></description>
-    <display-name>UserCheckServlet</display-name>
-    <servlet-name>UserCheckServlet</servlet-name>
-    <servlet-class>com.tedu.servlet.UserCheckServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>UserCheckServlet</servlet-name>
-    <url-pattern>/UserCheckServlet</url-pattern>
-  </servlet-mapping>
-  <filter>
-    <display-name>EncodingFilter</display-name>
-    <filter-name>EncodingFilter</filter-name>
-    <filter-class>com.tedu.filter.EncodingFilter</filter-class>
-  </filter>
-  <filter-mapping>
-    <filter-name>EncodingFilter</filter-name>
-    <url-pattern>/EncodingFilter</url-pattern>
-  </filter-mapping>
-  <servlet>
-    <description></description>
-    <display-name>VerifyCodeCreateServlet</display-name>
-    <servlet-name>VerifyCodeCreateServlet</servlet-name>
-    <servlet-class>com.tedu.servlet.VerifyCodeCreateServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>VerifyCodeCreateServlet</servlet-name>
-    <url-pattern>/VerifyCodeCreateServlet</url-pattern>
-  </servlet-mapping>
-  <servlet>
-    <description></description>
-    <display-name>VerifyCodeCheckServlet</display-name>
-    <servlet-name>VerifyCodeCheckServlet</servlet-name>
-    <servlet-class>com.tedu.servlet.VerifyCodeCheckServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>VerifyCodeCheckServlet</servlet-name>
-    <url-pattern>/VerifyCodeCheckServlet</url-pattern>
   </servlet-mapping>
 </web-app>
